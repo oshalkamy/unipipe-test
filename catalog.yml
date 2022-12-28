@@ -1,7 +1,7 @@
 services:
   # define a simple service offering
   # for field documentation see https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#service-offering-object
-  resources:
+ resources:
   - id: 8f7fc0d1-926c-45aa-8b8a-9c3d4a077c3c # this uuid was randomly generated using "unipipe generate uuid"
     - name: vm-created-by-deployment-manager
       type: compute.v1.instance
