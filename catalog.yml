@@ -2,182 +2,21 @@ services:
   # define a simple service offering
   # for field documentation see https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#service-offering-object
   - id: e46f927c-ce4e-4561-9208-91cb4b27b4a2 # this uuid was randomly generated using "unipipe generate uuid"
-    name: "Webservice-api"
-    description: "This service spins up a webservice in aws."
-    bindable: true
-    tags:
-      - "example"
-    plans:
-      # service offerings can come in one or multiple plans
-      # here we define plans in different t-shirt sizes
-      - id: 733e3f87-2c44-42c3-b228-739b85fe34fa # this uuid was randomly generated using "unipipe generate uuid"
-        name: "S"
-        description: "A t2.nano instance"
-        free: true
-        bindable: true
-        schemas: # schemas define the configuration options offered by a plan
-          service_instance:
-            create:
-              parameters:
-                "$schema": http://json-schema.org/draft-04/schema#
-                properties:
-                  username:
-                    title: username
-                    type: string
-
-      - id: 552becca-8f60-46de-94bc-3def5d13736e # this uuid was randomly generated using "unipipe generate uuid"
-        name: "M"
-        description: "A t2.micro instance"
-        free: true
-        bindable: true
-        schemas:
-          service_instance:
-            create:
-              parameters:
-                "$schema": http://json-schema.org/draft-04/schema#
-                properties:
-                  username:
-                    title: username
-                    type: string
-
-  # a more complex service example
-  - id: a60e6664-a552-42eb-8143-f4db79a12ff1 # this uuid was randomly generated using "unipipe generate uuid"
-    name: "Azure DevOps"
-    description: "Onboard your team to Azure DevOps services"
-    bindable: false
-    plan_updateable: true
-    instances_retrievable: true
-    bindings_retrievable: false
-    metadata:
-      displayName: "Azure DevOps"
-      imageUrl: "https://docs.microsoft.com/en-us/azure/devops/media/index/devopsiconpipelines96.svg?view=azure-devops"
-      longDescription: "Azure DevOps services"
-      providerDisplayName: "Azure"
-      documentationUrl: "https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops"
-      supportUrl: "https://azure.microsoft.com/en-us/services/devops/"
-    tags:
-      - "azure"
-      - "devops"
-    plans:
-      - id: 439fb150-0bd3-4190-8305-a06f54def5ac # this uuid was randomly generated using "unipipe generate uuid"
-        name: "Full Team Onboarding plan"
-        description: "Enable all user in your meshProject on Azure DevOps."
-        free: false
-        metadata:
-          bullets:
-            - bulletpoint 1
-            - bulletpoint 2
-          costs:
-            - amount:
-                eur: 99.99
-              unit: MONTHLY
-            - amount:
-                eur: 100.00
-              unit: SETUP FEE # setup fees as supported by meshMarketplace https://docs.meshcloud.io/docs/meshstack.meshmarketplace.metering.html#setup-fees
-          displayName: Fullteam plan
-        schemas:
-          service_instance:
-            create:
-              parameters:
-                $schema: http://json-schema.org/draft-04/schema#
-                properties:
-                  projectname:
-                    description: "Project name"
-                    type: "string"
-                  projectdescription:
-                    description: "Project describtion"
-                    type: "string"
-                  msteamsad:
-                    type: string
-                    title: MS Teams AD
-                    description: Select the correct ms teams ad
-                    enum:
-                      - DEV
-                      - TEST
-                      - PROD
-                    widget: select
-                  email:
-                    description: "E-mail address"
-                    type: "string"
-                type: object
-            update:
-              parameters:
-                $schema: http://json-schema.org/draft-04/schema#
-                properties:
-                  projectname:
-                    description: "Project name"
-                    type: "string"
-                  projectdescription:
-                    description: "Project describtion"
-                    type: "string"
-                  msteamsad:
-                    description: "MS Teams AD group"
-                    type: "string"
-                  email:
-                    description: "E-mail address"
-                    type: "string"
-                type: object
-
-  # a example for a network tenant service
-  - id: 3d0dc83c-4813-4080-a988-e8aaec5888ad # this uuid was randomly generated using "unipipe generate uuid"
-    name: Azure VNet
-    description: Provides a configurable default VNET in your Azure subscription.
-    bindable: false
-    plan_updateable: false
-    instances_retrievable: true
-    bindings_retrievable: false
-    metadata:
-      displayName: "Azure VNet Service"
-      imageUrl: "https://symbols.getvecta.com/stencil_28/71_virtual-network.4fe1e0cdfa.svg"
-    plans:
-      - id: b705f865-3f88-4137-baac-5c29997919a5 # this uuid was randomly generated using "unipipe generate uuid"
-        name: Standard
-        description: Standard vNet generates 1 Private and 1 Public Subnet
-        free: true
-        schemas:
-          service_instance:
-            create:
-              parameters:
-                "$schema": http://json-schema.org/draft-04/schema#
-                properties:
-                  VNetIP:
-                    title: vNet IP
-                    type: string
-                    widget:
-                      id: string
-                    default: "10.X.X.X"
-                  CidrBlock:
-                    title: CIDR Block
-                    type: string
-                    widget:
-                      id: select
-                    default: "28"
-                    oneOf:
-                      - description: /28 vNet with 6 addresses (+5 addresses reserved by Azure per each subnet)
-                        enum:
-                          - "28"
-                      - description: /27 vNet with 22 addresses (+5 addresses reserved by Azure per each subnet)
-                        enum:
-                          - "27"
-                      - description: /26 vNet with 54 addresses (+5 addresses reserved by Azure per each subnet)
-                        enum:
-                          - "26"
-                      - description: /25 vNet with 118 addresses (+5 addresses reserved by Azure per each subnet)
-                        enum:
-                          - "25"
-                      - description: /24 vNet with 246 addresses (+5 addresses reserved by Azure per each subnet)
-                        enum:
-                          - "24"
-                  VNetRegion:
-                    title: vNet Region
-                    type: string
-                    widget:
-                      id: select
-                    default: "GermanyWestCentral"
-                    oneOf:
-                      - description: GermanyWestCentral (default choice)
-                        enum:
-                          - "GermanyWestCentral"
-                      - description: WestEurope
-                        enum:
-                          - "WestEurope"
+    - name: the-first-vm
+  type: compute.v1.instance
+  properties:
+    zone: europe-west1-b
+    machineType: https://www.googleapis.com/compute/v1/projects/meshdelivery-yhk-playgr-2aj/zones/europe-west1-b/machineTypes/f1-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/MY_PROJECT/global/networks/default
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+  
