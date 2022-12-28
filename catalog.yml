@@ -2,6 +2,20 @@ services:
   # define a simple service offering
   # for field documentation see https://github.com/openservicebrokerapi/servicebroker/blob/v2.15/spec.md#service-offering-object
   - id: 8f7fc0d1-926c-45aa-8b8a-9c3d4a077c3c # this uuid was randomly generated using "unipipe generate uuid"
+    - name: vm-created-by-deployment-manager
+      type: compute.v1.instance
+      properties:
+        zone: us-central1-a
+        machineType: zones/us-central1-a/machineTypes/n1-standard-1
+        disks:
+        - deviceName: boot
+          type: PERSISTENT
+          boot: true
+          autoDelete: true
+          initializeParams:
+            sourceImage: projects/debian-cloud/global/images/family/debian-11
+        networkInterfaces:
+        - network: global/networks/default
     name: "Webservice-api"
     description: "This service spins up a webservice in aws."
     bindable: true
